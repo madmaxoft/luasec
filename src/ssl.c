@@ -22,10 +22,10 @@
 #include <lua.h>
 #include <lauxlib.h>
 
-#include <luasocket/io.h>
-#include <luasocket/buffer.h>
-#include <luasocket/timeout.h>
-#include <luasocket/socket.h>
+#include <io.h>
+#include <buffer.h>
+#include <timeout.h>
+#include <socket.h>
 
 #include "x509.h"
 #include "context.h"
@@ -37,6 +37,32 @@
 #define SSL_up_ref(ssl)  CRYPTO_add(&(ssl)->references, 1, CRYPTO_LOCK_SSL)
 #define X509_up_ref(c)   CRYPTO_add(&c->references, 1, CRYPTO_LOCK_X509)
 #endif
+
+
+
+
+
+// madmaxoft: We've removed the custom LuaSocket source from the tree, need this compatibility leftover:
+#ifdef WIN32
+    #define WAITFD_R        1
+    #define WAITFD_W        2
+    #define WAITFD_E        4
+    #define WAITFD_C        (WAITFD_E|WAITFD_W)
+#else
+    #ifndef SOCKET_SELECT
+        #include <sys/poll.h>
+        #define WAITFD_R        POLLIN
+        #define WAITFD_W        POLLOUT
+        #define WAITFD_C        (POLLIN|POLLOUT)
+    #else
+        #define WAITFD_R        1
+        #define WAITFD_W        2
+        #define WAITFD_C        (WAITFD_R|WAITFD_W)
+    #endif
+#endif
+
+
+
 
 
 /**

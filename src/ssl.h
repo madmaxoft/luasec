@@ -11,10 +11,10 @@
 #include <openssl/ssl.h>
 #include <lua.h>
 
-#include <luasocket/io.h>
-#include <luasocket/buffer.h>
-#include <luasocket/timeout.h>
-#include <luasocket/socket.h>
+#include <io.h>
+#include <buffer.h>
+#include <timeout.h>
+#include <socket.h>
 
 #include "compat.h"
 #include "context.h"
